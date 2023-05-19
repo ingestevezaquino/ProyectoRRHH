@@ -1,0 +1,69 @@
+@model ProyectoRRHH.Models.candidato
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>candidato</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="id" />
+            <div class="form-group">
+                <label asp-for="cedula" class="control-label"></label>
+                <input asp-for="cedula" class="form-control" />
+                <span asp-validation-for="cedula" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="nombre" class="control-label"></label>
+                <input asp-for="nombre" class="form-control" />
+                <span asp-validation-for="nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="puestoaspira" class="control-label"></label>
+                <select asp-for="puestoaspira" class="form-control" asp-items="ViewBag.puestoaspira"></select>
+                <span asp-validation-for="puestoaspira" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="departamento" class="control-label"></label>
+                <select asp-for="departamento" class="form-control" asp-items="ViewBag.departamento"></select>
+                <span asp-validation-for="departamento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="salarioaspira" class="control-label"></label>
+                <input asp-for="salarioaspira" class="form-control" />
+                <span asp-validation-for="salarioaspira" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="capacitaciones" class="control-label"></label>
+                <select asp-for="capacitaciones" class="form-control" asp-items="ViewBag.capacitaciones"></select>
+                <span asp-validation-for="capacitaciones" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="explaboral" class="control-label"></label>
+                <select asp-for="explaboral" class="form-control" asp-items="ViewBag.explaboral"></select>
+                <span asp-validation-for="explaboral" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="recomendadopor" class="control-label"></label>
+                <input asp-for="recomendadopor" class="form-control" />
+                <span asp-validation-for="recomendadopor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
