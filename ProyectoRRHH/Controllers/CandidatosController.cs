@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,14 +21,38 @@ namespace ProyectoRRHH.Controllers
         // GET: Candidatos
         public async Task<IActionResult> Index()
         {
-            var rrhhContext = await _context.candidatos
-                .Include(c => c.competencias)
-                .Include(c => c.capacitacionesNavigation)
+            var rrhhContext = _context.candidatos
+                .Include(c => c.competencia)
+                .Include(c => c.idiomas)
                 .Include(c => c.departamentoNavigation)
-                .Include(c => c.explaboralNavigation)
-                .Include(c => c.puestoaspiraNavigation)
-                .ToListAsync();
-            return View(rrhhContext);
+                .Include(c => c.puestoaspiraNavigation);
+            return View(await rrhhContext.ToListAsync());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index(string Candsearch)
+        {
+            ViewData["candidatos"] = Candsearch;
+
+            var candquery = await _context.candidatos
+                .Include(c => c.competencia)
+                .Include(c => c.idiomas)
+                .Include(c => c.capacitaciones)
+                .Include(c => c.departamentoNavigation)
+                .Include(c => c.puestoaspiraNavigation).ToListAsync();
+
+            var competencias = candquery[0].competencia.ToString();
+            var capacitaciones = candquery[0].capacitaciones.ToString();
+
+            if (!string.IsNullOrEmpty(Candsearch))
+            {
+                candquery = candquery.Where(x => (x.cedula.Contains(Candsearch)) ||
+                     x.competencia.Any(c => c.descripcion.ToLower().Trim().Contains(Candsearch.ToLower().Trim())) ||
+                     x.capacitaciones.Any(c => c.descripcion.ToLower().Trim().Contains(Candsearch.ToLower().Trim())))
+                    .ToList();
+            }
+
+            return View(candquery);
         }
 
         // GET: Candidatos/Details/5
@@ -40,10 +64,9 @@ namespace ProyectoRRHH.Controllers
             }
 
             var candidato = await _context.candidatos
-                .Include(c => c.competencias)
-                .Include(c => c.capacitacionesNavigation)
+                .Include(c => c.competencia)
+                .Include(c => c.idiomas)
                 .Include(c => c.departamentoNavigation)
-                .Include(c => c.explaboralNavigation)
                 .Include(c => c.puestoaspiraNavigation)
                 .FirstOrDefaultAsync(m => m.id == id);
             if (candidato == null)
@@ -58,9 +81,8 @@ namespace ProyectoRRHH.Controllers
         public IActionResult Create()
         {
             ViewData["competencias"] = new SelectList(_context.competencias, "id", "descripcion");
-            ViewData["capacitaciones"] = new SelectList(_context.capacitaciones, "descripcion", "descripcion");
+            ViewData["idiomas"] = new SelectList(_context.idiomas, "id", "nombre");
             ViewData["departamento"] = new SelectList(_context.departamentos, "departamento1", "departamento1");
-            ViewData["explaboral"] = new SelectList(_context.explaborals, "empresa", "empresa");
             ViewData["puestoaspira"] = new SelectList(_context.puestos, "nombre", "nombre");
             return View();
         }
@@ -70,22 +92,31 @@ namespace ProyectoRRHH.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,cedula,nombre,puestoaspira,departamento,salarioaspira,competencias,capacitaciones,explaboral,recomendadopor")] candidato candidato)
+        public async Task<IActionResult> Create([Bind("id,cedula,nombre,puestoaspira,departamento,salarioaspira,explaboral,empresa,puestoocupado,fechadesde,fechahasta,salario,recomendadopor")] candidato candidato)
         {
+            var fechadesde = Request.Form["fechadesde"][0];
+            candidato.fechadesde = DateOnly.Parse(fechadesde);
+
+            var fechahasta = Request.Form["fechahasta"][0];
+            candidato.fechahasta = DateOnly.Parse(fechahasta);
+
             if (ModelState.IsValid)
             {
-                var competenciasIds = Request.Form["competencias"].Select(x => int.Parse(x)).ToArray();
+                var competenciasIds = Request.Form["competencia"].Select(x => int.Parse(x)).ToArray();
                 var competencias = _context.competencias.Where(x => competenciasIds.Contains(x.id)).ToList();
-                candidato.competencias = competencias;
+                candidato.competencia = competencias;
+
+                var idiomasIds = Request.Form["idiomas"].Select(x => int.Parse(x)).ToArray();
+                var idiomas = _context.idiomas.Where(x => idiomasIds.Contains(x.id)).ToList();
+                candidato.idiomas = idiomas;
 
                 _context.Add(candidato);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["competencias"] = new SelectList(_context.competencias, "id", "descripcion", candidato.competencias);
-            ViewData["capacitaciones"] = new SelectList(_context.capacitaciones, "descripcion", "descripcion", candidato.capacitaciones);
+            ViewData["competencias"] = new SelectList(_context.competencias, "id", "descripcion", candidato.competencia);
+            ViewData["idiomas"] = new SelectList(_context.idiomas, "id", "nombre", candidato.idiomas);
             ViewData["departamento"] = new SelectList(_context.departamentos, "departamento1", "departamento1", candidato.departamento);
-            ViewData["explaboral"] = new SelectList(_context.explaborals, "empresa", "empresa", candidato.explaboral);
             ViewData["puestoaspira"] = new SelectList(_context.puestos, "nombre", "nombre", candidato.puestoaspira);
             return View(candidato);
         }
@@ -103,9 +134,9 @@ namespace ProyectoRRHH.Controllers
             {
                 return NotFound();
             }
-            ViewData["capacitaciones"] = new SelectList(_context.capacitaciones, "descripcion", "descripcion", candidato.capacitaciones);
+            ViewData["competencias"] = new SelectList(_context.competencias, "id", "descripcion", candidato.competencia);
+            ViewData["idiomas"] = new SelectList(_context.idiomas, "id", "nombre", candidato.idiomas);
             ViewData["departamento"] = new SelectList(_context.departamentos, "departamento1", "departamento1", candidato.departamento);
-            ViewData["explaboral"] = new SelectList(_context.explaborals, "empresa", "empresa", candidato.explaboral);
             ViewData["puestoaspira"] = new SelectList(_context.puestos, "nombre", "nombre", candidato.puestoaspira);
             return View(candidato);
         }
@@ -115,7 +146,7 @@ namespace ProyectoRRHH.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,cedula,nombre,puestoaspira,departamento,salarioaspira,capacitaciones,explaboral,recomendadopor")] candidato candidato)
+        public async Task<IActionResult> Edit(int id, [Bind("id,cedula,nombre,puestoaspira,departamento,salarioaspira,explaboral,empresa,puestoocupado,fechadesde,fechahasta,salario,recomendadopor")] candidato candidato)
         {
             if (id != candidato.id)
             {
@@ -142,9 +173,9 @@ namespace ProyectoRRHH.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["capacitaciones"] = new SelectList(_context.capacitaciones, "descripcion", "descripcion", candidato.capacitaciones);
+            ViewData["competencias"] = new SelectList(_context.competencias, "id", "descripcion", candidato.competencia);
+            ViewData["idiomas"] = new SelectList(_context.idiomas, "id", "nombre", candidato.idiomas);
             ViewData["departamento"] = new SelectList(_context.departamentos, "departamento1", "departamento1", candidato.departamento);
-            ViewData["explaboral"] = new SelectList(_context.explaborals, "empresa", "empresa", candidato.explaboral);
             ViewData["puestoaspira"] = new SelectList(_context.puestos, "nombre", "nombre", candidato.puestoaspira);
             return View(candidato);
         }
@@ -158,9 +189,9 @@ namespace ProyectoRRHH.Controllers
             }
 
             var candidato = await _context.candidatos
-                .Include(c => c.capacitacionesNavigation)
+                .Include(c => c.competencia)
+                .Include(c => c.idiomas)
                 .Include(c => c.departamentoNavigation)
-                .Include(c => c.explaboralNavigation)
                 .Include(c => c.puestoaspiraNavigation)
                 .FirstOrDefaultAsync(m => m.id == id);
             if (candidato == null)

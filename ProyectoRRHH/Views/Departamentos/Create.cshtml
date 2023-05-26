@@ -1,33 +1,32 @@
-@model ProyectoRRHH.Models.departamento
+﻿@model ProyectoRRHH.Models.departamento
 
 @{
     ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<h1>Crear departamento</h1>
 
-<h4>departamento</h4>
+<hr />
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="departamento1" class="control-label"></label>
+                <a>Departamento</a>
                 <input asp-for="departamento1" class="form-control" />
                 <span asp-validation-for="departamento1" class="text-danger"></span>
             </div>
+            <hr />
+            <hr />
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" /> |
+                <a asp-action="Index">Volver</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+

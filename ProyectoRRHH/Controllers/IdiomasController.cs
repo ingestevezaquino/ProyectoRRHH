@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,22 +9,22 @@ using ProyectoRRHH.Models;
 
 namespace ProyectoRRHH.Controllers
 {
-    public class IdiomasController : Controller
+    public class idiomasController : Controller
     {
         private readonly rrhhContext _context;
 
-        public IdiomasController(rrhhContext context)
+        public idiomasController(rrhhContext context)
         {
             _context = context;
         }
 
-        // GET: Idiomas
+        // GET: idiomas
         public async Task<IActionResult> Index()
         {
               return View(await _context.idiomas.ToListAsync());
         }
 
-        // GET: Idiomas/Details/5
+        // GET: idiomas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.idiomas == null)
@@ -42,13 +42,13 @@ namespace ProyectoRRHH.Controllers
             return View(idioma);
         }
 
-        // GET: Idiomas/Create
+        // GET: idiomas/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Idiomas/Create
+        // POST: idiomas/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -64,7 +64,7 @@ namespace ProyectoRRHH.Controllers
             return View(idioma);
         }
 
-        // GET: Idiomas/Edit/5
+        // GET: idiomas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.idiomas == null)
@@ -80,7 +80,7 @@ namespace ProyectoRRHH.Controllers
             return View(idioma);
         }
 
-        // POST: Idiomas/Edit/5
+        // POST: idiomas/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -115,7 +115,7 @@ namespace ProyectoRRHH.Controllers
             return View(idioma);
         }
 
-        // GET: Idiomas/Delete/5
+        // GET: idiomas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.idiomas == null)
@@ -133,7 +133,7 @@ namespace ProyectoRRHH.Controllers
             return View(idioma);
         }
 
-        // POST: Idiomas/Delete/5
+        // POST: idiomas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

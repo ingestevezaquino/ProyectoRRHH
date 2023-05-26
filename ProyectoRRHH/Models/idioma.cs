@@ -10,4 +10,6 @@ public partial class idioma
     public string nombre { get; set; }
 
     public string nivel { get; set; }
+
+    public virtual ICollection<candidato> candidatos { get; set; } = new List<candidato>();
 }

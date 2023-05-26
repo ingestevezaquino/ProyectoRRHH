@@ -1,31 +1,35 @@
-@model IEnumerable<ProyectoRRHH.Models.capacitacione>
+﻿@model IEnumerable<ProyectoRRHH.Models.capacitacione>
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
-
+<h2>Capacitaciones</h2>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-success">Agregar</a>
 </p>
+<br />
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.descripcion)
+                <h4>Descripción</h4>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.nivel)
+                <h4>Nivel</h4>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.fechadesde)
+                <h4>Fecha Desde</h4>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.fechahasta)
+                <h4>Fecha Hasta</h4>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.institucion)
+                <h4>Institución</h4>
+            </th>
+            <th>
+                <h4>Candidato</h4>
             </th>
             <th></th>
         </tr>
@@ -49,9 +53,12 @@
                 @Html.DisplayFor(modelItem => item.institucion)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
+                @Html.DisplayFor(modelItem => item.candidato.cedula)
+            </td>
+            <td>
+                <a asp-action="Edit" class="btn btn-warning" asp-route-id="@item.id">Editar</a> |
+                    <!--<a asp-action="Details" class="btn btn-primary" asp-route-id="@item.id">Detalles</a>-->
+                <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.id">Eliminar</a>
             </td>
         </tr>
 }

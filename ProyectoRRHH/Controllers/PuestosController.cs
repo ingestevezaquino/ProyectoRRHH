@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,13 +18,13 @@ namespace ProyectoRRHH.Controllers
             _context = context;
         }
 
-        // GET: Puestos
+        // GET: puestoes
         public async Task<IActionResult> Index()
         {
               return View(await _context.puestos.ToListAsync());
         }
 
-        // GET: Puestos/Details/5
+        // GET: puestoes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.puestos == null)
@@ -42,13 +42,13 @@ namespace ProyectoRRHH.Controllers
             return View(puesto);
         }
 
-        // GET: Puestos/Create
+        // GET: puestoes/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Puestos/Create
+        // POST: puestoes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -64,7 +64,7 @@ namespace ProyectoRRHH.Controllers
             return View(puesto);
         }
 
-        // GET: Puestos/Edit/5
+        // GET: puestoes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.puestos == null)
@@ -80,7 +80,7 @@ namespace ProyectoRRHH.Controllers
             return View(puesto);
         }
 
-        // POST: Puestos/Edit/5
+        // POST: puestoes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -115,7 +115,7 @@ namespace ProyectoRRHH.Controllers
             return View(puesto);
         }
 
-        // GET: Puestos/Delete/5
+        // GET: puestoes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.puestos == null)
@@ -133,7 +133,7 @@ namespace ProyectoRRHH.Controllers
             return View(puesto);
         }
 
-        // POST: Puestos/Delete/5
+        // POST: puestoes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

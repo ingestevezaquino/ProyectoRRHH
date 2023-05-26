@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using ProyectoRRHH.Models;
+using Microsoft.Extensions.DependencyInjection;
+using ProyectoRRHH;
+using ProyectoRRHH.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +10,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<rrhhContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("rrhh_connection")));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<rrhhContext>();
+/*builder.Services.AddIdentity<ProyectoRRHHUser, IdentityRole>()
+    .AddEntityFrameworkStores<ProyectoRRHHContext>()
+    .AddDefaultTokenProviders();
+
+/*builder.Services.AddDefaultIdentity<ProyectoRRHHUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ProyectoRRHHContext>();
+//Add Identity
+
+
+// Configurar la autenticaci�n y autorizaci�n
+
+builder.Services.AddControllersWithViews();
 
 
 builder.Services.Configure<IdentityOptions>(options =>
@@ -23,16 +36,16 @@ builder.Services.AddAuthentication()
         options.Cookie.Name = "ProyectoRRHH.AuthCookie";
         options.Cookie.HttpOnly = true;
         options.ExpireTimeSpan = TimeSpan.FromDays(30);
-        options.LoginPath = "/Account/Login";
-        options.AccessDeniedPath = "/Account/AccessDenied";
+        options.LoginPath = "/Usuarios/Login";
+        options.AccessDeniedPath = "/Usuarios/AccessDenied";
         options.SlidingExpiration = true;
-    });
+    });*/
 
-builder.Services.AddAuthorization(options =>
+/*builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireAdminRole", policy =>
         policy.RequireRole("Admin"));
-});
+});*/
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
@@ -63,14 +76,13 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.UseAuthentication();
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Login}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
 
-
-app.UseAuthentication();
-app.UseAuthorization();
 
 app.UseSession();

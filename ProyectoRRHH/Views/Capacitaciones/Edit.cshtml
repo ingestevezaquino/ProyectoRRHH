@@ -1,7 +1,8 @@
-@model ProyectoRRHH.Models.capacitacione
+﻿@model ProyectoRRHH.Models.capacitacione
 
 @{
     ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Edit</h1>
@@ -13,6 +14,11 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="id" />
+            <div class="form-group">
+                <label asp-for="candidato_id" class="control-label"></label>
+                <select asp-for="candidato_id" class="form-control" asp-items="ViewBag.candidato_id"></select>
+                <span asp-validation-for="candidato_id" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="descripcion" class="control-label"></label>
                 <input asp-for="descripcion" class="form-control" />
@@ -49,6 +55,3 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

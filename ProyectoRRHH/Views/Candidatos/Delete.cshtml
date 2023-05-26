@@ -1,7 +1,8 @@
-@model ProyectoRRHH.Models.candidato
+﻿@model ProyectoRRHH.Models.candidato
 
 @{
     ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Delete</h1>
@@ -29,6 +30,60 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.salarioaspira)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.competencia)
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                var competencias = String.Join(", ", Model.competencia.Select(x => x.descripcion).ToArray());
+            }
+            @Html.DisplayFor(model => competencias)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.idiomas)
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                var idiomas = String.Join(", ", Model.idiomas.Select(x => x.nombre).ToArray());
+            }
+            @Html.DisplayFor(model => idiomas)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.explaboral)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.explaboral)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.empresa)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.empresa)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.puestoocupado)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.puestoocupado)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.fechadesde)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.fechadesde)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.fechahasta)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.fechahasta)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.salario)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.salario)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.recomendadopor)
         </dt>
@@ -36,22 +91,10 @@
             @Html.DisplayFor(model => model.recomendadopor)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.capacitacionesNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.capacitacionesNavigation.descripcion)
-        </dd>
-        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.departamentoNavigation)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.departamentoNavigation.departamento1)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.explaboralNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.explaboralNavigation.empresa)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.puestoaspiraNavigation)
